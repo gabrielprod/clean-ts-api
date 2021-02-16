@@ -9,6 +9,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
+  // class mock que retorna um valor fake por isso a terminacao Stub
   class EmailValidatorStub implements EmailValidator {
     isValid (email: string): Boolean {
       return true
@@ -99,5 +100,23 @@ describe('Signup Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new InvalidParamError('email'))
+  })
+
+  test('Should call EmailValidator with correct email', () => {
+    const { sut, emailValidatorStub } = makeSut()
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
+    // spyOn -> Basicamente passamos um objeto como parametro nesse método e o mesmo ira analisar/espionar o comportamento da função
+    // retornando assim valores passados no metodo mockReturnValueOnce
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@gmail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+
+    sut.handle(httpRequest)
+    expect(isValidSpy).toHaveBeenCalledWith('any_email@gmail.com')
   })
 })
