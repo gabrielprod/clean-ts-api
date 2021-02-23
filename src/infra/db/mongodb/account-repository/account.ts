@@ -3,7 +3,6 @@ import { AddAccountModel } from '../../../../domain/usecases/add-account'
 import { AccountModel } from '../../../../domain/models/account'
 import { mongoHelper } from '../helper/mongo-helper'
 
-
 export class AccountMongoRepository implements AddAccountRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
     const accountCollection = mongoHelper.getCollection('accounts')
