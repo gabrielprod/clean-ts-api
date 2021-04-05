@@ -10,6 +10,7 @@ export class SignUpController implements Controller {
   private readonly addAccount: AddAccount
   private readonly validation: Validation
 
+  // dependecy injection
   constructor (emailValidator: EmailValidator, addAccount: AddAccount, validation: Validation) {
     this.emailValidator = emailValidator
     this.addAccount = addAccount
@@ -23,11 +24,7 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
 
-      const { name, password, passwordConfirmation, email } = httpRequest.body
-
-      if (password !== passwordConfirmation) {
-        return badRequest(new InvalidParamError('passwordConfirmation'))
-      }
+      const { name, password, email } = httpRequest.body
 
       const isValid = this.emailValidator.isValid(email)
       if (!isValid) {
