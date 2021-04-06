@@ -1,6 +1,7 @@
 import { MissingParamError } from '../../errors'
 import { Validation } from './validation'
 
+// filho do validation composite
 export class RequiredFieldValidation implements Validation {
   private readonly fieldName: string
 
