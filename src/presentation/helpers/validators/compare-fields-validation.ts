@@ -1,5 +1,5 @@
 import { InvalidParamError } from '../../errors'
-import { Validation } from './validation'
+import { Validation } from '../../protocols/validation'
 
 // filho do validation composite
 export class CompareFieldsValidation implements Validation {
