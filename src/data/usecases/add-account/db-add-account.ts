@@ -1,16 +1,16 @@
-import { AccountModel, AddAccount, AddAccountModel, Encrypter, AddAccountRepository } from './db-add-account-protocols'
+import { AccountModel, AddAccount, AddAccountModel, Hasher, AddAccountRepository } from './db-add-account-protocols'
 
 export class DbAddAccount implements AddAccount {
-  private readonly encrypter: Encrypter
+  private readonly hasher: Hasher
   private readonly addAccountRepo: AddAccountRepository
 
-  constructor (encrypter: Encrypter, addAccountRepo: AddAccountRepository) {
-    this.encrypter = encrypter
+  constructor (hasher: Hasher, addAccountRepo: AddAccountRepository) {
+    this.hasher = hasher
     this.addAccountRepo = addAccountRepo
   }
 
   async add (accountData: AddAccountModel): Promise<AccountModel> {
-    const hashedPassword = await this.encrypter.encrypt(accountData.password)
+    const hashedPassword = await this.hasher.hash(accountData.password)
     const account = await this.addAccountRepo.add(Object.assign({}, accountData, { password: hashedPassword }))
     return new Promise(resolve => resolve(account))
   }
