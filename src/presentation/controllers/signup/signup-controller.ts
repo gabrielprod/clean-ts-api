@@ -1,6 +1,6 @@
 import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
 import { Validation } from '../../protocols/validation'
-import { AddAccount, Controller, HttpRequest, HttpResponse } from './signup-protocols' // protocolos genéricos
+import { AddAccount, Controller, HttpRequest, HttpResponse } from './signup-controller-protocols' // protocolos genéricos
 
 // classe nao pode herdar lguma tipagem, classe herda somente outra classe, por isso o uso do implements pois tal classe esta herdando certo tipo
 // ou melhor dizendo implementando
