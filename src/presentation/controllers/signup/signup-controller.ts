@@ -1,17 +1,19 @@
 import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
 import { Validation } from '../../protocols/validation'
 import { AddAccount, Controller, HttpRequest, HttpResponse } from './signup-controller-protocols' // protocolos genéricos
+import { Authentication } from '../../../domain/usecases/authentication'
 
 // classe nao pode herdar lguma tipagem, classe herda somente outra classe, por isso o uso do implements pois tal classe esta herdando certo tipo
 // ou melhor dizendo implementando
 export class SignUpController implements Controller {
   private readonly addAccount: AddAccount
   private readonly validation: Validation
-
+  private readonly authentication: Authentication
   // dependecy injection
-  constructor (addAccount: AddAccount, validation: Validation) {
+  constructor (addAccount: AddAccount, validation: Validation, authentication: Authentication) {
     this.addAccount = addAccount
     this.validation = validation
+    this.authentication = authentication
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -28,6 +30,12 @@ export class SignUpController implements Controller {
         email,
         password
       })
+
+      await this.authentication.auth({
+        email,
+        password
+      })
+
       return ok(account)
     } catch (error) {
       return serverError(error)
