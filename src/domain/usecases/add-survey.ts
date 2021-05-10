@@ -1,6 +1,6 @@
 export interface AddSurveyModel {
   question: string
-  answers: SurveyAnswer
+  answers: SurveyAnswer[]
 }
 
 export interface SurveyAnswer {
