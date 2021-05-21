@@ -85,4 +85,14 @@ describe('DbLoadAccountByToken', () => {
     const account = await sut.load('any_token', 'any_role')
     expect(account).toEqual(makeFakeAccount())
   })
+
+  test('Should throws if Decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+
+    const promise = sut.load('any_token', 'any_role')
+    // espera que o metodo encrypt lanse um erro
+    await expect(promise).rejects.toThrow()
+  })
+
 })
