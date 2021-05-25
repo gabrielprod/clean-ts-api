@@ -4,8 +4,9 @@ import { AccountModel } from '../../../../domain/models/account'
 import { mongoHelper } from '../helper/mongo-helper'
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/account/load-account-by-email-repository'
 import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/account/update-access-token-repository'
+import { LoadAccountByTokenRepository } from '../../../../data/protocols/db/account/load-account-by-token-repository'
 
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
     const accountCollection = await mongoHelper.getCollection('accounts')
     const result = await accountCollection.insertOne(accountData)
@@ -31,4 +32,12 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
       }
     })
   }
+
+  async loadByToken (token: string, role?:string): Promise<AccountModel> {
+    const accountCollection = await mongoHelper.getCollection('accounts')
+    const account = await accountCollection.findOne({ accessToken: token, role })
+    if (account) {
+      return mongoHelper.map(account)
+    }
+  } 
 }
