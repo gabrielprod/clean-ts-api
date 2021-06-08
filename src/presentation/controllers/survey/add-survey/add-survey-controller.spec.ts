@@ -2,6 +2,7 @@ import { AddSurvey, AddSurveyModel, HttpRequest } from './add-survey-controller-
 import { AddSurveyController } from './add-survey-controller'
 import { Validation } from '../../../protocols'
 import { badRequest, serverError, noContent } from '../../../helpers/http/http-helper'
+import mockdate from 'mockdate'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -9,7 +10,8 @@ const makeFakeRequest = (): HttpRequest => ({
     answers: [{
       image: 'any_image',
       answer: 'any_answer'
-    }]
+    }],
+    createdAt: new Date()
   }
 })
 
@@ -52,6 +54,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('AddSurvey Controller', () => {
+  beforeAll(() => {
+    mockdate.set(new Date())
+  })
+
+  afterAll(() => {
+    mockdate.reset()
+  })
   test('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
