@@ -1,4 +1,5 @@
 import { LoadSurveys } from "../../../../domain/usecases/load-surveys";
+import { ok } from "../../../helpers/http/http-helper";
 import { Controller, HttpRequest, HttpResponse } from "./load-surveys-controller-protocols";
 
 export class LoadSurveysController implements Controller{
@@ -9,7 +10,7 @@ export class LoadSurveysController implements Controller{
   }
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    await this.loadSurveys.load() 
-    return null
+    const surveys = await this.loadSurveys.load() 
+    return ok(surveys)
   } 
 }
