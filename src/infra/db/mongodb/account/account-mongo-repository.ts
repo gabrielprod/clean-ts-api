@@ -33,10 +33,10 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
     })
   }
 
-  async loadByToken (token: string, role?:string): Promise<AccountModel> {
+  async loadByToken (token: string, role?: string): Promise<AccountModel> {
     const accountCollection = await mongoHelper.getCollection('accounts')
-    const account = await accountCollection.findOne({ 
-      accessToken: token, 
+    const account = await accountCollection.findOne({
+      accessToken: token,
       $or: [{
         role
       }, {
@@ -46,5 +46,5 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
     if (account) {
       return mongoHelper.map(account)
     }
-  } 
+  }
 }
