@@ -1,8 +1,7 @@
-import { LoadAccountByToken } from '../../../domain/usecases/load-account-by-token'
 import { Decrypter } from '../../protocols/criptography/decrypter'
-import { AccountModel, LoadAccountByEmailRepository } from '../add-account/db-add-account-protocols'
-import { DbLoadAccountByToken } from './db-load-account-by-token'
 import { LoadAccountByTokenRepository } from '../../protocols/db/account/load-account-by-token-repository'
+import { AccountModel } from '../add-account/db-add-account-protocols'
+import { DbLoadAccountByToken } from './db-load-account-by-token'
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'valid_id',
@@ -22,8 +21,8 @@ const makeDecrypter = (): Decrypter => {
 }
 
 const makeLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {
-  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository  {
-    async loadByToken(token: string, role:string): Promise<AccountModel> {
+  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
+    async loadByToken (token: string, role: string): Promise<AccountModel> {
       return new Promise(resolve => resolve(makeFakeAccount()))
     }
   }
@@ -103,5 +102,4 @@ describe('DbLoadAccountByToken', () => {
     // espera que o metodo encrypt lanse um erro
     await expect(promise).rejects.toThrow()
   })
-
 })
