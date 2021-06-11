@@ -5,7 +5,6 @@ import { Collection } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 import env from '../config/env'
 
-
 let surveyCollection: Collection
 let accountCollection: Collection
 
@@ -42,7 +41,6 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 204 on add survey with valid accessToken', async () => {
-
       const res = await accountCollection.insertOne({
         name: 'gabrielp',
         email: 'gabriel.pr9@hotmail.com',
@@ -53,12 +51,12 @@ describe('Survey Routes', () => {
       const id = res.ops[0]._id
       const accessToken = sign({ id }, env.jwtSecret)
 
-      await accountCollection.updateOne({ 
+      await accountCollection.updateOne({
         _id: id
       }, {
-         $set: {
-           accessToken
-         }
+        $set: {
+          accessToken
+        }
       })
 
       await request(app)
@@ -74,6 +72,14 @@ describe('Survey Routes', () => {
           }]
         })
         .expect(204)
+    })
+  })
+
+  describe('GET /surveys', () => {
+    test('Should return 403 on load surveys without accessToken', async () => {
+      await request(app)
+        .get('/api/surveys')
+        .expect(403)
     })
   })
 })
