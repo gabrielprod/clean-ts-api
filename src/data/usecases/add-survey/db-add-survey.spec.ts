@@ -1,4 +1,4 @@
-import { AddSurveyModel } from '../../../domain/usecases/add-survey'
+import { AddSurveyModel } from '@/domain/usecases/add-survey'
 import { DbAddSurvey } from './db-add-survey'
 import { AddSurveyRepository } from './db-add-survey-protocols'
 import mockdate from 'mockdate'
@@ -37,7 +37,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbAddSurvey Usecase', () => {
-
   beforeAll(() => {
     mockdate.set(new Date())
   })
