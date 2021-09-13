@@ -51,7 +51,7 @@ const makeHttpRequest = (): HttpRequest => ({
   }
 })
 
-type SutTypes = {
+interface SutTypes {
   sut: SignUpController
   addAccountStub: AddAccount
   validationStub: Validation

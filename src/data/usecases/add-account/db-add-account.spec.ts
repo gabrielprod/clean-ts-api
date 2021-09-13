@@ -44,7 +44,7 @@ const makeAddAccountRepo = (): AddAccountRepository => {
   return new AddAccountRepositoryStub()
 }
 
-interface SutTypes{
+type SutTypes = {
   hasherStub: Hasher
   sut: DbAddAccount
   addAccountRepositoryStub: AddAccount
