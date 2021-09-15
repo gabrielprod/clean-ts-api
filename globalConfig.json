@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"mongoUri":"mongodb://127.0.0.1:35613/0c66e50d-f7d5-49bb-b096-4ad64282e657?"}
-=======
-{"mongoUri":"mongodb://127.0.0.1:40331/5849c3ec-6f2d-4b45-afb8-3ef3e424172e?"}
->>>>>>> fix/routes
+{"mongoUri":"mongodb://127.0.0.1:40401/5c91027f-6209-4540-9a3a-58ae898b65d1?"}
