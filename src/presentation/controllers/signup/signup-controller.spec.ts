@@ -2,7 +2,7 @@ import { MissingParamError, ServerError, EmailInUseError } from '@/presentation/
 import { badRequest, ok, serverError, forbidden } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/index'
 import { SignUpController } from './signup-controller'
-import { Authentication, AuthenticationModel } from '@/presentation/../domain/usecases/authentication'
+import { Authentication, AuthenticationModel } from '@/domain/usecases/account/authentication'
 import { AccountModel, AddAccount, AddAccountModel, Validation } from './signup-controller-protocols'
 
 const makeAddAccount = (): AddAccount => {
