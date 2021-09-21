@@ -18,6 +18,8 @@ export class SaveSurveyResultController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      // surveyId chega como ObjectId, typescript converte para string no metodo loadById, assim dando conflito
+      // na hora de salvar a resposta da enquete, pois o mongo salva o ID como  objetcId
       const { surveyId } = httpRequest.params
       const { answer } = httpRequest.body
       const { accountId } = httpRequest
