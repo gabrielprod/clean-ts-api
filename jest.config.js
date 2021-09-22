@@ -3,7 +3,9 @@ module.exports = {
   collectCoverageFrom: ['<rootDir>/src/**/*.ts',
     '!<rootDir>/src/**/*-protocols.ts',
     '!<rootDir>/src/main/**',
-    '!**/protocols/**'],
+    '!**/test/**',
+    '!**/protocols/**'
+  ],
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
   testEnvironment: 'node',

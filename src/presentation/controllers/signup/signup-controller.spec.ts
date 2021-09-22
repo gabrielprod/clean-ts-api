@@ -1,47 +1,12 @@
-import { MissingParamError, ServerError, EmailInUseError } from '@/presentation/errors/index'
-import { badRequest, ok, serverError, forbidden } from '@/presentation/helpers/http/http-helper'
+import { throwError } from '@/domain/test'
+import { Authentication } from '@/domain/usecases/account/authentication'
+import { EmailInUseError, MissingParamError, ServerError } from '@/presentation/errors/index'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/index'
+import { mockAddAccount, mockAuthentication, mockValidation } from '@/presentation/test'
 import { SignUpController } from './signup-controller'
-import { Authentication, AuthenticationParams } from '@/domain/usecases/account/authentication'
-import { AccountModel, AddAccount, AddAccountParams, Validation } from './signup-controller-protocols'
+import { AddAccount, Validation } from './signup-controller-protocols'
 
-const makeAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add (account: AddAccountParams): Promise<AccountModel> {
-      return new Promise(resolve => resolve(makeFakeAccount()))
-    }
-  }
-  return new AddAccountStub()
-}
-
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    // Retornamos um erro nesse metodo pois se ocorrer tudo certo com a validacao nao queremos fazer nada, mas caso der erro devemos retornar esse erro!
-    validate (input: any): Error {
-      return null
-    }
-  }
-  return new ValidationStub()
-}
-
-const makeAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationParams): Promise<string> {
-      return new Promise(resolve => resolve('any_token'))
-    }
-  }
-
-  return new AuthenticationStub()
-}
-
-const makeFakeAccount = (): AccountModel => ({
-  id: 'valid_id',
-  name: 'valid_name',
-  email: 'valid_email@gmail.com',
-  password: 'valid_password'
-})
-
-// Para retornarmos um objeto de maneira direta devemos colocar parenteses antes das chaves
 const makeHttpRequest = (): HttpRequest => ({
   body: {
     name: 'any_name',
@@ -60,9 +25,9 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   // class mock que retorna um valor fake por isso a terminacao Stub
-  const addAccountStub = makeAddAccount()
-  const validationStub = makeValidation()
-  const authenticationStub = makeAuthentication()
+  const addAccountStub = mockAddAccount()
+  const validationStub = mockValidation()
+  const authenticationStub = mockAuthentication()
   const sut = new SignUpController(addAccountStub, validationStub, authenticationStub)
 
   return {
@@ -143,7 +108,7 @@ describe('Signup Controller', () => {
 
   test('Should return 500 if Authentication throws', async () => {
     const { sut, authenticationStub } = makeSut()
-    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(makeHttpRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
